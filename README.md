@@ -43,7 +43,30 @@ console.log("phasors: " + phasors);
 
 `phasors` now contains the complex values in the ferquency domain representation of the signal!
 
-We can also reconstruct our original time-domain signal from the complex phasors.
+We can plot this by computing the frequency amplitudes from the complex vectors:
+
+```javascript
+let table = [],
+    R = phasors.real,
+    I = phasors.image,
+    N = R.length,
+    binSize = 2 * Math.PI / N;
+
+/*
+  The Nyquist frequency runs from 0 to the midpoint of the list of phasors.
+*/
+for (let i = 0; i < N / 2; i++) {
+  let frequency = i * binSize,
+      amplitude = (R[i] ** 2 + I[i] ** 2) ** 0.5,
+      dB = 20 * log10(a);
+
+  table.push({ frequency, amplitude, dB });
+}
+
+console.table(table);
+```
+
+And we can also reconstruct our original time-domain signal from the complex phasors.
 
 ```javascript
 let reconstructedSignal = jsfft.ifft(phasors);
